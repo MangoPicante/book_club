@@ -4,12 +4,16 @@ import requests
 import webbrowser
 # Returns BeautifulSoup for the given url
 def soup_cooker(url):
+    fetched = False
     # Fetch
-    try:
-        response = requests.get(url)
-    except Exception as e:
-        print('Connection Error', str(e))
-        return None
+    while not fetched:
+        try:
+            response = requests.get(url)
+        except Exception as e:
+            print('Connection Error', str(e))
+            return None
+        else:
+            fetched = True
     # Parse
     soup = BeautifulSoup(response.text, 'html.parser')
     # extracts title from soup
