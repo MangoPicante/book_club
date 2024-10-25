@@ -1,26 +1,9 @@
-from bs4 import BeautifulSoup
+# Scrapes goodreads for book data
+from scraper_utils import soup_cooker
 import pandas as pd
-import requests
 import webbrowser
-# Returns BeautifulSoup for the given url
-def soup_cooker(url):
-    fetched = False
-    # Fetch
-    while not fetched:
-        try:
-            response = requests.get(url)
-        except Exception as e:
-            print('Connection Error', str(e))
-            return None
-        else:
-            fetched = True
-    # Parse
-    soup = BeautifulSoup(response.text, 'html.parser')
-    # extracts title from soup
-    title = soup.find('title').contents[0]
-    print('Scraping:',title)
-    return soup
-# Returns the url that matches the book name 
+
+# Returns the url that matches the book name in the dataframe's row using row['goodreads search'] and row['book']
 def url(row):
     book = row['book'].lower()
     soup = soup_cooker(row['goodreads search'])
@@ -90,7 +73,7 @@ def author(soup):
     except:
         print('Error finding the author in soup:', soup.find('title').contents[0])
         return None
-# Returns a Series of the scraped data
+# Returns a Series of the scraped data from goodreads
 def scrape(url):
     # cooks the url into a soup
     soup = soup_cooker(url)
