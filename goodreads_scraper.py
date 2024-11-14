@@ -74,8 +74,8 @@ def author(soup):
         print('Error finding the author in soup:', soup.find('title').contents[0])
         return None
 # Returns a Series of the scraped data from goodreads
-def scrape(url):
+def scrape(row):
     # cooks the url into a soup
-    soup = soup_cooker(url)
+    soup = soup_cooker(row['g_url'])
     # collects all the scraped data and returns it as a Series
     return pd.Series([rating(soup), genre(soup), author(soup), pages(soup), published(soup)])
