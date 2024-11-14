@@ -1,12 +1,12 @@
 # Scrapes goodreads for book data
-from scraper_utils import soup_cooker
+import scraper_utils as scu
 import pandas as pd
 import webbrowser
 
 # Returns the url that matches the book name in the dataframe's row using row['goodreads search'] and row['book']
 def url(row):
     book = row['book'].lower()
-    soup = soup_cooker(row['goodreads search'])
+    soup = scu.soup_cooker(row['goodreads search'])
     # finds the anchor tags of the first page
     anchor_tags = soup.find_all('a', {'class' : 'bookTitle'})
     # splits the anchor tags into title and converts href into a full url, trimming search info
@@ -30,52 +30,32 @@ def url(row):
     return None
 # Returns the soup's rating
 def rating(soup):
-    try:
-        return float(soup.find('div', {'class': 'RatingStatistics__rating'}).contents[0])
-    except:
-        print('Error finding the rating')
-        return None
+    return float(soup.find('div', {'class': 'RatingStatistics__rating'}).contents[0])
 # Returns the soup's genre
 def genre(soup):
-    try:
-        # generates a list of genre tags
-        tags = soup.find('ul', {'aria-label': 'Top genres for this book'}).find_all('span', {'class' : 'Button__labelItem'})
-        # gets the content of each tag in the list
-        genres = [genre.contents[0] for genre in tags]
-        # removes the last category if it is ...more
-        if genres[-1] == '...more':
-            del genres[-1]
-        return genres
-    except:
-        print('Error finding the categories')
-        return None
+    # generates a list of genre tags
+    tags = soup.find('ul', {'aria-label': 'Top genres for this book'}).find_all('span', {'class' : 'Button__labelItem'})
+    # gets the content of each tag in the list
+    genres = [genre.contents[0] for genre in tags]
+    # removes the last category if it is ...more
+    if genres[-1] == '...more':
+        del genres[-1]
+    return genres
 # Returns the soup's publication date
 def published(soup):
-    try:
-        contents = soup.find('p', {'data-testid' : 'publicationInfo'}).contents[0]
-        date = contents.replace('First published ', '').replace('Published ', '')
-        return pd.to_datetime(date, format='%B %d, %Y')
-    except:
-        print('Error finding the publication info')
-        return None
+    contents = soup.find('p', {'data-testid' : 'publicationInfo'}).contents[0]
+    date = contents.replace('First published ', '').replace('Published ', '')
+    return pd.to_datetime(date, format='%B %d, %Y')
 # Returns the soup's page count
 def pages(soup):
-    try:
-        contents = soup.find('p', {'data-testid' : 'pagesFormat'}).contents[0]
-        return int(contents.split(' ')[0])
-    except:
-        print('Error finding the pages')
-        return None
+    contents = soup.find('p', {'data-testid' : 'pagesFormat'}).contents[0]
+    return int(contents.split(' ')[0])
 # Returns the soup's author
 def author(soup):
-    try:
-        return soup.find('span', {'class' : 'ContributorLink__name'}).contents[0]
-    except:
-        print('Error finding the author')
-        return None
+    return soup.find('span', {'class' : 'ContributorLink__name'}).contents[0]
 # Returns a Series of the scraped data from goodreads
 def scrape(row):
     # cooks the url into a soup
-    soup = soup_cooker(row['g_url'])
+    soup = scu.soup_cooker(row['g_url'])
     # collects all the scraped data and returns it as a Series
-    return pd.Series([rating(soup), genre(soup), author(soup), pages(soup), published(soup)])
+    return pd.Series([scu.try_except_wrapper(rating(soup)), scu.try_except_wrapper(genre(soup)), scu.try_except_wrapper(author(soup)), scu.try_except_wrapper(pages(soup)), scu.try_except_wrapper(published(soup))])

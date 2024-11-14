@@ -26,3 +26,10 @@ def soup_cooker(url):
     title = soup.find('title').text
     print('Scraping:', title)
     return soup
+
+def try_except_wrapper(func, *args):
+    try:
+        return func(*args)
+    except:
+        print(f'Error running {func.__name__}')
+        return None
