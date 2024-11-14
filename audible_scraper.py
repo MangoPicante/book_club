@@ -116,7 +116,6 @@ def tags(soup):
     except:
         print('Error finding the tags in soup:', soup.find('title').contents[0])
         return None
-def scrape(row):
-    a_url = url(row)
-    soup = soup_cooker(a_url)
-    return pd.Series([a_url, ratings(soup), runtime(soup), author(soup), narrator(soup), categories(soup), tags(soup)])
+def scrape(url):
+    soup = soup_cooker(url)
+    return pd.Series([ratings(soup), runtime(soup), author(soup), narrator(soup), categories(soup), tags(soup)])
