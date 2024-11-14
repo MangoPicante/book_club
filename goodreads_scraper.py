@@ -5,8 +5,13 @@ import webbrowser
 
 # Returns the url that matches the book name in the dataframe's row using row['goodreads search'] and row['book']
 def url(row):
+    # gets the book name in lowercase
     book = row['book'].lower()
+    # gets the soup from the search url
     soup = scu.soup_cooker(row['goodreads search'])
+    # validates the soup
+    if soup is None:
+        return None
     # finds the anchor tags of the first page
     anchor_tags = soup.find_all('a', {'class' : 'bookTitle'})
     # splits the anchor tags into title and converts href into a full url, trimming search info

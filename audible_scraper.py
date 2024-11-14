@@ -6,8 +6,13 @@ import re
 
 # Returns the url that matches the book name in the dataframe's row using row['audible search'] and row['book']
 def url(row):
+    # gets the book name in lowercase
     book = row['book'].lower()
+    # gets the soup from the search url
     soup = scu.soup_cooker(row['audible search'])
+    # validates the soup
+    if soup is None:
+        return None
     # finds all of the list items containing search result info
     search_results = soup.find_all('div', class_='bc-col-responsive bc-col-12')
     # for each search result list item, finds the title, url, and number of ratings and appends them to search_result_tuples
