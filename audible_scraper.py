@@ -14,7 +14,6 @@ def ratings(soup):
         if div_tag.find('span', class_='full-review-star') is not None:
             rating_div_tags.append(div_tag)
             continue
-    print(rating_div_tags)
     # finds the rating span tag within the div tag
     span_tags = [rating_div_tag.find('span', class_='bc-text bc-pub-offscreen') for rating_div_tag in rating_div_tags]
     ratings = [float(span_tag.text.split()[0]) for span_tag in span_tags]
