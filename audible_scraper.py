@@ -58,7 +58,7 @@ def ratings(soup):
         labelled_ratings = dict(zip(labels, ratings))
         return labelled_ratings
     except:
-        print('Error finding the rating in soup:', soup.find('title').contents[0])
+        print('Error finding the rating')
         return None
 def runtime(soup):
     try:
@@ -73,7 +73,7 @@ def runtime(soup):
             runtime = int(runtime_list[0] * 60)
         return runtime
     except:
-        print('Error finding the runtime in soup:', soup.find('title').contents[0])
+        print('Error finding the runtime')
         return None
 def author(soup):
     try:
@@ -82,7 +82,7 @@ def author(soup):
         # returns the author from the a tag within the li tag
         return li_tag.find('a').text
     except:
-        print('Error finding the author in soup:', soup.find('title').contents[0])
+        print('Error finding the author')
         return None
 def narrator(soup):
     try:
@@ -91,7 +91,7 @@ def narrator(soup):
         # returns the narrator from the a tag within the li tag
         return li_tag.find('a').text
     except:
-        print('Error finding the narrator in soup:', soup.find('title').contents[0])
+        print('Error finding the narrator')
         return None
 def categories(soup):
     try:
@@ -103,7 +103,7 @@ def categories(soup):
         categories = re.split(r',\s*|\s&\s', category_string)
         return categories
     except:
-        print('Error finding the categories in soup:', soup.find('title').contents[0])
+        print('Error finding the categories')
         return None
 def tags(soup):
     try:
@@ -114,7 +114,7 @@ def tags(soup):
         tags = [span_tag.text.strip() for span_tag in span_tags]
         return tags
     except:
-        print('Error finding the tags in soup:', soup.find('title').contents[0])
+        print('Error finding the tags')
         return None
 def scrape(row):
     soup = soup_cooker(row['a_url'])

@@ -33,7 +33,7 @@ def rating(soup):
     try:
         return float(soup.find('div', {'class': 'RatingStatistics__rating'}).contents[0])
     except:
-        print('Error finding the rating in soup:', soup.find('title').contents[0])
+        print('Error finding the rating')
         return None
 # Returns the soup's genre
 def genre(soup):
@@ -47,7 +47,7 @@ def genre(soup):
             del genres[-1]
         return genres
     except:
-        print('Error finding the categories in soup:', soup.find('title').contents[0])
+        print('Error finding the categories')
         return None
 # Returns the soup's publication date
 def published(soup):
@@ -56,7 +56,7 @@ def published(soup):
         date = contents.replace('First published ', '').replace('Published ', '')
         return pd.to_datetime(date, format='%B %d, %Y')
     except:
-        print('Error finding the publication info in soup:', soup.find('title').contents[0])
+        print('Error finding the publication info')
         return None
 # Returns the soup's page count
 def pages(soup):
@@ -64,14 +64,14 @@ def pages(soup):
         contents = soup.find('p', {'data-testid' : 'pagesFormat'}).contents[0]
         return int(contents.split(' ')[0])
     except:
-        print('Error finding the pages in soup:', soup.find('title').contents[0])
+        print('Error finding the pages')
         return None
 # Returns the soup's author
 def author(soup):
     try:
         return soup.find('span', {'class' : 'ContributorLink__name'}).contents[0]
     except:
-        print('Error finding the author in soup:', soup.find('title').contents[0])
+        print('Error finding the author')
         return None
 # Returns a Series of the scraped data from goodreads
 def scrape(row):
