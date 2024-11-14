@@ -4,45 +4,6 @@ import pandas as pd
 import webbrowser
 import re
 
-# Returns the url that matches the book name in the dataframe's row using row['audible search'] and row['book']
-def url(row):
-    # gets the book name in lowercase
-    book = row['book'].lower()
-    # gets the soup from the search url
-    soup = scu.soup_cooker(row['audible search'])
-    # validates the soup
-    if soup is None:
-        return None
-    # finds all of the list items containing search result info
-    search_results = soup.find_all('div', class_='bc-col-responsive bc-col-12')
-    # for each search result list item, finds the title, url, and number of ratings and appends them to search_result_tuples
-    search_result_tuples = []
-    for search_result in search_results:
-        #skips search results that don't have a title tag
-        title_tag = search_result.find('h3', class_="bc-heading bc-color-link bc-pub-break-word bc-size-medium")
-        if title_tag is None:
-            continue
-        title_tag = title_tag.a
-        # finds the title
-        title = title_tag.text.lower()
-        # finds the href
-        href = title_tag['href']
-        # converts href into a full url, trimming search info
-        url = 'https://www.audible.com' + href.split('?')[0]
-        tuple = (title, url)
-        search_result_tuples.append(tuple)
-    # checks search results for exact matches to the title, returns the first matching url
-    for result in search_result_tuples:
-        if result[0] == book:
-            return result[1]
-    # checks search results for titles that start with the book, returns first matching url
-    for result in search_result_tuples:
-        if result[0].startswith(book):
-            return result[1]
-    # automatically opens the search url of a book title that isn't found
-    browser = webbrowser.get('windows-default')
-    browser.open(row['audible search'])
-    return None
 # Returns the soup's ratings
 def ratings(soup):
     # finds the potential rating div tags

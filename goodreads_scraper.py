@@ -3,36 +3,6 @@ import scraper_utils as scu
 import pandas as pd
 import webbrowser
 
-# Returns the url that matches the book name in the dataframe's row using row['goodreads search'] and row['book']
-def url(row):
-    # gets the book name in lowercase
-    book = row['book'].lower()
-    # gets the soup from the search url
-    soup = scu.soup_cooker(row['goodreads search'])
-    # validates the soup
-    if soup is None:
-        return None
-    # finds the anchor tags of the first page
-    anchor_tags = soup.find_all('a', {'class' : 'bookTitle'})
-    # splits the anchor tags into title and converts href into a full url, trimming search info
-    title_url_tuples = [(anchor_tag.span.text.lower(), 'https://www.goodreads.com' + anchor_tag['href'].split('?')[0]) for anchor_tag in anchor_tags]
-    # finds the author tags of the first page
-    author_tags = soup.find_all('span', {'itemprop' : 'author'})
-    # creates a mask of any results that contain an adapter in the author list
-    mask = [len(author_tag.find_all(string='(Adapter)')) == 0 for author_tag in author_tags]
-    search_results = [tuple for tuple, bool in zip(title_url_tuples, mask) if bool]
-    # checks search results for exact matches to the title, returns the first matching url
-    for result in search_results:
-        if result[0] == book:
-            return result[1]
-    # checks search results for titles that start with the book, returns first matching url
-    for result in search_results:
-        if result[0].startswith(book):
-            return result[1]
-    # automatically opens the search url of a book title that isn't found
-    browser = webbrowser.get('windows-default')
-    browser.open(row['goodreads search'])
-    return None
 # Returns the soup's rating
 def rating(soup):
     return float(soup.find('div', {'class': 'RatingStatistics__rating'}).contents[0])
