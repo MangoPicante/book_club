@@ -17,7 +17,7 @@ def csv_save_prompt(df, filename):
 
 def column_backfill(df, columns, scraper):
     if not all(column in df.columns for column in columns):
-        print('Columns {columns} not found in dataframe')
+        print(f'Columns {columns} not found in dataframe')
         df[columns] = df.apply(scraper, axis=1)
     else:
         mask = df[columns].isnull().any(axis=1)
