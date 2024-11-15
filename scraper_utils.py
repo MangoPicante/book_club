@@ -24,7 +24,6 @@ def soup_cooker(url):
     soup = BeautifulSoup(html, 'html.parser')
     # extracts title from soup
     title = soup.find('title').text
-    print('Scraping:', title)
     return soup
 
 def try_except_wrapper(func, *args):
