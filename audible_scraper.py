@@ -1,7 +1,6 @@
 # Scrapes audible for book data
 import scraper_utils as scu
 import pandas as pd
-import webbrowser
 import re
 
 # Returns the soup's ratings
