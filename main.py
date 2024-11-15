@@ -9,6 +9,9 @@ def column_backfill(df, columns, scraper):
         df[columns] = df.apply(scraper, axis=1)
     else:
         mask = df[columns].isnull().any(axis=1)
+        if mask.sum().sum() == 0:
+            print(f'No missing values found in {columns}')
+            return df
         print(f'Filling {mask.sum().sum()} missing values in {columns} with {scraper.__name__}')
         df.loc[mask, columns] = df[mask].apply(scraper, axis=1)
     return df
@@ -34,5 +37,4 @@ else:
         file_io.save(book_club, 'book_club', 'json')
     except Exception as e:
         print(f"Error: {e}")
-print(book_club.dtypes)
 file_io.save(book_club, 'book_club', 'csv')
