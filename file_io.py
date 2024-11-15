@@ -32,9 +32,14 @@ def save(df, filename, filetype):
             if filetype == 'csv':
                 df.to_csv(filename + '.' + filetype, index=False)
             elif filetype == 'json':
+                # convert datetime columns to string
+                df_dtypes = df.dtypes.apply(lambda x: x.name).to_dict()
+                for col in df.select_dtypes(include=['datetime64[ns]']).columns:
+                    df[col] = df[col].astype(str)
+                # save data and dtypes to json
                 data = {
                     'data': df.to_dict(orient='records'),
-                    'dtypes': df.dtypes.apply(lambda x: x.name).to_dict()
+                    'dtypes': df_dtypes
                 }
                 with open(filename + '.' + filetype, 'w') as f:
                     json.dump(data, f)
