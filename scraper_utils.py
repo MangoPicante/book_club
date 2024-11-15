@@ -30,5 +30,5 @@ def try_except_wrapper(func, *args):
     try:
         return func(*args)
     except:
-        print(f'Error running {func.__name__}')
+        print(f'Error scraping {func.__name__}')
         return None
