@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 import requests
 
 # Returns BeautifulSoup for the given url
@@ -29,8 +30,8 @@ def soup_cooker(url, js_bool=False):
         # set the options
         options = Options()
         options.headless = True
-        
-        driver = webdriver.Chrome(options=options)
+        service = webdriver.ChromeService()
+        driver = webdriver.Chrome(service=service, options=options)
         driver.get(url)
         html = driver.page_source
         driver.quit()
