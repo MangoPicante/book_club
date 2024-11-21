@@ -58,4 +58,6 @@ def tags(soup):
     return tags
 def scrape(row):
     soup = scu.soup_cooker(row['a_url'], True)
-    return pd.Series([scu.try_except_wrapper(ratings, soup), scu.try_except_wrapper(runtime, soup), scu.try_except_wrapper(author, soup), scu.try_except_wrapper(narrator, soup), scu.try_except_wrapper(categories, soup), scu.try_except_wrapper(tags, soup)])
+    return pd.Series([scu.try_except_wrapper(ratings, soup), scu.try_except_wrapper(runtime, soup), 
+                      scu.try_except_wrapper(author, soup), scu.try_except_wrapper(narrator, soup), 
+                      scu.try_except_wrapper(categories, soup), scu.try_except_wrapper(tags, soup)])

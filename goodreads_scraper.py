@@ -34,5 +34,7 @@ def scrape(row):
     # cooks the url into a soup
     soup = scu.soup_cooker(row['g_url'])
     # collects all the scraped data and returns it as a Series
-    ser = pd.Series([scu.try_except_wrapper(rating, soup), scu.try_except_wrapper(genre, soup), scu.try_except_wrapper(author, soup), scu.try_except_wrapper(pages, soup), scu.try_except_wrapper(published, soup)])
+    ser = pd.Series([scu.try_except_wrapper(rating, soup), scu.try_except_wrapper(genre, soup), 
+                     scu.try_except_wrapper(author, soup), scu.try_except_wrapper(pages, soup), 
+                     scu.try_except_wrapper(published, soup)])
     return ser
